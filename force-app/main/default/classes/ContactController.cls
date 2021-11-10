@@ -1,6 +1,6 @@
 public with sharing class ContactController {
     @AuraEnabled(cacheable=true)
-    public static Map<String,List<Contact>> getContacts(){
+    public static List<Contact>  getContacts(){ //Map<String,List<Contact>>
         //throw new AuraHandledException('Forced error');
     	
         Integer value = Integer.valueof((Math.random() * 10));
@@ -14,9 +14,10 @@ public with sharing class ContactController {
             //return A;   
         }*/
          if (value >=1 && value <=10){
-            String word = 'a'; //'[{"label": "First Name", "fieldName": "FirstName",  "type":"text" , "editable": "true" },{"label": "Phone", "fieldName": "Phone",  "type":"phone" , "editable": "true" }]';       
-            objectFields.put(word, B);
-            return objectFields;
+            //String word = 'a'; //'[{"label": "First Name", "fieldName": "FirstName",  "type":"text" , "editable": "true" },{"label": "Phone", "fieldName": "Phone",  "type":"phone" , "editable": "true" }]';       
+            //objectFields.put(word, B);
+            //return objectFields;
+            return B;
         }
         else { 
             //return C; 

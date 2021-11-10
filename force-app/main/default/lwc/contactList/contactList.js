@@ -25,21 +25,20 @@ const COLUMS3 = [
 
 
 export default class ContactList extends LightningElement {
-    //@track columns = COLUMS;
-    columns = []; 
-    @api auxiliar = '';
+    @track columns = COLUMS;
+    //columns = []; 
+    @api auxiliar = "Ingresando";
 
     @wire(getContacts)
     contacts;
     error;
     wiredcontacts({error, data}){
         if (data){
-            this.contacts = Object.values(data[0]); 
+            this.contacts = data;//Object.values(data[0]); 
             this.error = undefined;      
-            if (Object.keys(data[0])) {
-                this.columns = COLUMS;
-            }  
-            auxiliar = 'Hola'; 
+            aux(); //NO está haciendo esto - siempre muestra ingresando! 
+            //if (Object.keys(data[0])) {
+            //    this.columns = COLUMS;}  
             //this.colums = COLUMS; 
         } else if (error){
             this.contacts = undefined;
@@ -47,6 +46,9 @@ export default class ContactList extends LightningElement {
         }
     }
 
+    aux(){
+        return this.auxiliar = "Exito";
+    }
     get errors(){
     return (this.contacts.error) ?
     reduceErrors(this.contacts.error):[];

@@ -1,8 +1,8 @@
 <template>
     <lightning-card>
-        <p>Debe aparecer algo si hay data: </p>
+        <p>Debe aparecer algo si hay data:  </p>
         <template if:true={contacts.data}>
-            <p>{auxiliar}</p>
+            <p><lightning-formatted-text value={auxiliar}></lightning-formatted-text></p>
             <lightning-datatable
                 key-field="Id"
                 data={contacts.data}
