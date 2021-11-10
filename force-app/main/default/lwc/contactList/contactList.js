@@ -36,7 +36,7 @@ export default class ContactList extends LightningElement {
         if (data){
             this.contacts = data;//Object.values(data[0]); 
             this.error = undefined;      
-            aux(); //NO está haciendo esto - siempre muestra ingresando! 
+            //aux(); //NO está haciendo esto - siempre muestra ingresando! 
             //if (Object.keys(data[0])) {
             //    this.columns = COLUMS;}  
             //this.colums = COLUMS; 
@@ -45,10 +45,11 @@ export default class ContactList extends LightningElement {
             this.error = error;
         }
     }
-
-    aux(){
-        return this.auxiliar = "Exito";
+    get aux () {
+        if (this.contacts !== undefined){return "Exito";}
+        return "Fracaso";
     }
+
     get errors(){
     return (this.contacts.error) ?
     reduceErrors(this.contacts.error):[];

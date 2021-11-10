@@ -1,0 +1,16 @@
+<template>
+    <lightning-card icon-name="standard:opportunity">
+        <template if:true={opportunity.data}>
+            <header slot="title" class="slds-page-header">
+                <h1><span class="slds-page-header__title slds-truncate">{name}</span></h1>
+            </header>
+            <div class="slds-m-around_medium slds-box slds-box_x-small">
+                <h2>Account Id: {accountId}</h2>
+                <h2>Amount: <lightning-formatted-number value={amount}></lightning-formatted-number> | Close Date: <lightning-formatted-date-time value={closeDate}></lightning-formatted-date-time></h2>
+            </div>
+        </template>
+        <template if:true={opportunity.error}>
+            <!--<c-error-panel errors={contact.error}></c-error-panel>-->
+        </template>
+    </lightning-card>
+</template>

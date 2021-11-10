@@ -10,18 +10,18 @@ public with sharing class ContactController {
         Map<String, List<Contact>> objectFields= new Map<String, List<Contact>>();
         //String word = 'a'; 
         
-        /*if (value <= 1) {
-            //return A;   
-        }*/
-         if (value >=1 && value <=10){
+        if (value < 3) {
+            return A;   
+        }
+         if (value >=3 && value <=7){
             //String word = 'a'; //'[{"label": "First Name", "fieldName": "FirstName",  "type":"text" , "editable": "true" },{"label": "Phone", "fieldName": "Phone",  "type":"phone" , "editable": "true" }]';       
             //objectFields.put(word, B);
             //return objectFields;
             return B;
         }
         else { 
-            //return C; 
-            return null;
+            return C; 
+            //return null;
         }
     }
 }

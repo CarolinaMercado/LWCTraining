@@ -2,7 +2,7 @@
     <lightning-card>
         <p>Debe aparecer algo si hay data:  </p>
         <template if:true={contacts.data}>
-            <p><lightning-formatted-text value={auxiliar}></lightning-formatted-text></p>
+            <p><lightning-formatted-text value={aux}></lightning-formatted-text></p>
             <lightning-datatable
                 key-field="Id"
                 data={contacts.data}
@@ -10,6 +10,9 @@
                 column-widths-mode="auto"
                 >
             </lightning-datatable>
+        </template>
+        <template if:false={contacts.data}>
+            <p><lightning-formatted-text value={aux}></lightning-formatted-text></p>
         </template>
         <template if:true={errors}>
             <p>{errors}</p>
