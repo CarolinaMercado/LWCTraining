@@ -1,0 +1,28 @@
+<template>
+    <lightning-card>
+    <div class="slds-grid slds-gutters">
+    <div class="slds-col slds-size_1-of-2 slds-align_absolute-center">
+        <!--class="slds-box slds-box_x-small" en combobox-->
+        <lightning-combobox  name="progress" label="Status" value={value} placeholder="Select Progress"
+            options={options}  onchange={handleChange} ></lightning-combobox>
+        <lightning-combobox  name="progress" label="Status" value={value} placeholder="Select Progress"
+        options={options} onchange={handleChange} ></lightning-combobox>
+    </div>
+    <div class="slds-col slds-size_1-of-2">
+        <p>Selected value is: {value}</p>
+        <!-- Button group: simple buttons -->
+        <lightning-button-group class="slds-align_absolute-center">
+            <lightning-button variant="brand" label="Reorder Lines"></lightning-button>
+            <lightning-button variant="brand-outline" label="Save & Calculate"></lightning-button>
+            <lightning-button variant="brand" label="Save & Exit" icon-name="utility:save"></lightning-button>
+        </lightning-button-group>
+        <br>
+        <lightning-button-group class="slds-align_absolute-center">
+            <lightning-button label="Product Selection"></lightning-button>
+            <lightning-button label="Clone Selected"></lightning-button>
+        </lightning-button-group>
+        <br>
+    </div>
+    </div>
+</lightning-card>
+</template>
