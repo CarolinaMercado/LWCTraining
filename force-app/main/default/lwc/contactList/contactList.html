@@ -8,8 +8,10 @@
                 data={contacts.data}
                 columns={columns}
                 column-widths-mode="auto"
+                onrowaction={handleRowAction}
                 >
             </lightning-datatable>
+            <p><lightning-formatted-text value={popup}></lightning-formatted-text></p>
         </template>
         <template if:false={contacts.data}>
             <p><lightning-formatted-text value={aux}></lightning-formatted-text></p>

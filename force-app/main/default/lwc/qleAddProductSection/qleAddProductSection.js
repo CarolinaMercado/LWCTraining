@@ -1,17 +1,8 @@
-import { LightningElement } from 'lwc';
+import { LightningElement , wire, api, track} from 'lwc';
+//Opportunity record 0065f0000063BmfAAE
+
+
 
 export default class QleAddProductSection extends LightningElement {
-    value = 'inProgress';
 
-    get options() {
-        return [
-            { label: 'New', value: 'new' },
-            { label: 'In Progress', value: 'inProgress' },
-            { label: 'Finished', value: 'finished' },
-        ];
-    }
-
-    handleChange(event) {
-        this.value = event.detail.value;
-    }
 }
