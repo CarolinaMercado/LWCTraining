@@ -29,8 +29,11 @@ export default class ContactList extends LightningElement {
     @track columns = COLUMS;
     //columns = []; 
     @api auxiliar = "Ingresando";
-    @api popup = "No click";
-
+    @api popup = "Desclickeado!";
+    @api contactRow={};
+    @track rowOffset = 0;  
+    @track modalContainer = false;
+    
     @wire(getContacts)
     contacts;
     error;
@@ -56,17 +59,47 @@ export default class ContactList extends LightningElement {
     return (this.contacts.error) ?
     reduceErrors(this.contacts.error):[];
     }
-    
-    /*
-    set popup(event){
-        if (event.detail.action.name === 'More') {
-            this.popup = "Clickeado!";
-        } 
-    }
-    */
+
+    //Click to see Tiers
     handleRowAction(event) {
         if (event.detail.action.name === 'More') {
-            this.popup = "Clickeado!";
+            this.popup ==="Clickeado!" ? this.popup="Desclickeado!" : this.popup="Clickeado!";
+            //this.popup = "Clickeado!";
+            const dataRow = event.detail.row;
+            window.console.log('dataRow@@ ' + dataRow);
+            this.contactRow=dataRow;
+            window.console.log('contactRow## ' + dataRow);
+            this.modalContainer=true;
         } 
     }
+
+    closeModalAction(){
+        this.modalContainer=false;
+    }
+
+    //Table information
+    clickedButtonLabel = true;
+    @api columnsTiers; 
+    //@track dataParent; 
+
+    handleClick1(event) {
+        this.clickedButtonLabel = true;
+        this.columnsTiers = [
+            { label: 'Tier Name', fieldName: 'name' },
+            { label: 'Number', fieldName: 'number', type: 'number' },
+            { label: 'Discount', fieldName: 'discount', type: 'number' },
+        ];
+        //this.dataParent = contactRow;
+    }
+    handleClick2(event) {
+        this.clickedButtonLabel = false;
+        this.columnsTiers = [
+            { label: 'Contract', fieldName: 'contract' },
+            { label: 'Effective Date', fieldName: 'effectiveDate', type: 'date' },
+            { label: 'Price', fieldName: 'price', type: 'currency' },
+        ];
+        //this.dataParent = contactRow;
+    }
+
+    
 }

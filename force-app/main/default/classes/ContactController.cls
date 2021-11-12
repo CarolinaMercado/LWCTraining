@@ -4,16 +4,19 @@ public with sharing class ContactController {
         //throw new AuraHandledException('Forced error');
     	
         Integer value = Integer.valueof((Math.random() * 10));
-        List<Contact> A = [SELECT FirstName, LastName, Email FROM Contact WITH SECURITY_ENFORCED ORDER BY Name LIMIT 5];
-        List<Contact> B = [SELECT FirstName, Phone FROM Contact WITH SECURITY_ENFORCED ORDER BY Name DESC LIMIT 5];   
+        List<Contact> A = [SELECT Id, FirstName, LastName, Email FROM Contact WITH SECURITY_ENFORCED ORDER BY Name LIMIT 10];
+        List<Contact> B = [SELECT FirstName, Phone FROM Contact WITH SECURITY_ENFORCED ORDER BY Name DESC LIMIT 10];   
         List<Contact> C = [SELECT FirstName, Title FROM Contact WITH SECURITY_ENFORCED ORDER BY Name LIMIT 10]; 
         Map<String, List<Contact>> objectFields= new Map<String, List<Contact>>();
+
+        //Sessions (Related objects)
+        
         //String word = 'a'; 
         
-        if (value < 3) {
+        if (value < 4) {
             return A;   
         }
-         if (value >=3 && value <=7){
+         if (value >=4 && value <=7){
             //String word = 'a'; //'[{"label": "First Name", "fieldName": "FirstName",  "type":"text" , "editable": "true" },{"label": "Phone", "fieldName": "Phone",  "type":"phone" , "editable": "true" }]';       
             //objectFields.put(word, B);
             //return objectFields;

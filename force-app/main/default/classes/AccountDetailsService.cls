@@ -25,7 +25,7 @@ public with sharing class AccountDetailsService {
     }
     @AuraEnabled(cacheable = true)
     public static List<Account> getAccounts(){
-        List<Account> accountList = [SELECT Id, Name, Industry, Rating,ParentId, Parent.Name, AccountNumber FROM Account LIMIT 3];
+        List<Account> accountList = [SELECT Id, Name, Industry, Rating,ParentId, Parent.Name, AccountNumber FROM Account LIMIT 5];
         return accountList;
     }
 }
