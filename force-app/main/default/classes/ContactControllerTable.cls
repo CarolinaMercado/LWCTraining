@@ -1,4 +1,4 @@
-public with sharing class ContactController {
+public with sharing class ContactControllerTable {
     @AuraEnabled(cacheable=true)
     public static List<Contact>  getContacts(){ //Map<String,List<Contact>>
         //throw new AuraHandledException('Forced error');

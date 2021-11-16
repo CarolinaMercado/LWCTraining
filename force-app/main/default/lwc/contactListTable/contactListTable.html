@@ -4,10 +4,15 @@
         <template if:true={contacts.data}>
             <!--Data table starts-->
             <p><lightning-formatted-text value={aux}></lightning-formatted-text></p>
+            <p>Contacts</p>
             <lightning-datatable key-field="Id" data={contacts.data} columns={columns} column-widths-mode="auto"
                 onrowaction={handleRowAction} >
             </lightning-datatable>
+            <p>newContacts</p>
             <lightning-datatable key-field="Id" data={newContacts.data} columns={columns} column-widths-mode="auto"
+                onrowaction={handleRowAction} ></lightning-datatable>
+                <p>contactsToShow</p>
+            <lightning-datatable key-field="Id" data={contactsToShow.data} columns={columns} column-widths-mode="auto"
                 onrowaction={handleRowAction} ></lightning-datatable>
             <!--Data table finish-->
             

@@ -52,4 +52,3 @@ export default class Dynamic_LWC_Data_Table extends LightningElement {
         })
     }
 }
-    

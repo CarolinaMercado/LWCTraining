@@ -1,9 +1,5 @@
-import { LightningElement, api, wire , track} from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import { publish, MessageContext } from 'lightning/messageService';
-import ADD_ROW_LOOKUP_CHANNEL from '@salesforce/messageChannel/AddRowLookup__c';
-
-
 
 const SEARCH_DELAY = 300; // Wait 300 ms after user stops typing then, peform search
 
@@ -32,9 +28,9 @@ export default class Lookup extends NavigationMixin(LightningElement) {
     @api minSearchTermLength = 2;
 
     // Template properties
-    @api searchResultsLocalState = [];
+    searchResultsLocalState = [];
     loading = false;
-    isMultiEntry = false;
+
     // Private properties
     _hasFocus = false;
     _isDirty = false;
@@ -57,9 +53,6 @@ export default class Lookup extends NavigationMixin(LightningElement) {
     get selection() {
         return this._curSelection;
     }
-
-    @wire(MessageContext)
-    messageContext;
 
     @api
     setSearchResults(results) {
@@ -92,7 +85,6 @@ export default class Lookup extends NavigationMixin(LightningElement) {
             }
             return result;
         });
-        
         // Add local state and dynamic class to search results
         this._focusedResultIndex = null;
         const self = this;
@@ -110,11 +102,8 @@ export default class Lookup extends NavigationMixin(LightningElement) {
                 }
             };
         });
-
-        
     }
 
-    
     @api
     getSelection() {
         return this._curSelection;
@@ -198,9 +187,6 @@ export default class Lookup extends NavigationMixin(LightningElement) {
         if (isUserInteraction) {
             const selectedIds = this._curSelection.map((sel) => sel.id);
             this.dispatchEvent(new CustomEvent('selectionchange', { detail: selectedIds }));
-            //Mandando Id's para añadir a tabla
-            const payload = { results: selectedIds };
-            publish(this.messageContext, ADD_ROW_LOOKUP_CHANNEL, payload);
         }
     }
 

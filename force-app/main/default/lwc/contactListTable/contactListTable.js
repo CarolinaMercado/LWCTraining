@@ -1,6 +1,6 @@
 import { LightningElement, wire , track, api} from 'lwc';
-import getContacts from '@salesforce/apex/ContactController.getContacts';
-import addContacts from '@salesforce/apex/ContactController.addContacts';
+import getContacts from '@salesforce/apex/ContactControllerTable.getContacts';
+import addContacts from '@salesforce/apex/ContactControllerTable.addContacts';
 import FirstNameFIELD from '@salesforce/schema/Contact.FirstName';
 import LastNameFIELD from '@salesforce/schema/Contact.LastName';
 import EmailFIELD from '@salesforce/schema/Contact.Email';
@@ -54,7 +54,7 @@ export default class ContactList extends LightningElement {
     @track rowOffset = 0;  
     @track modalContainer = false;
     @track contactsIdAdded; 
-    @track newContacts;
+    @track newContacts = [];
 
     @wire(getContacts)
     contacts;
@@ -63,8 +63,6 @@ export default class ContactList extends LightningElement {
         if (data){
             this.contacts = data;//Object.values(data[0]); 
             this.error = undefined;    
-            this.contactsToShow = this.contacts;  
-            //aux(); //NO está haciendo esto - siempre muestra ingresando! 
             //if (Object.keys(data[0])) {
             //    this.columns = COLUMS;}  
             //this.colums = COLUMS; 
@@ -82,7 +80,10 @@ export default class ContactList extends LightningElement {
     return (this.contacts.error) ?
     reduceErrors(this.contacts.error):[];
     }
-    
+
+    get contactsToShow(){
+        return this.contacts.data.records.records;
+    }
     
     //Add rows
     @wire(MessageContext)
@@ -109,8 +110,10 @@ export default class ContactList extends LightningElement {
     wiredcontacts({error, data}){
         if (data){
             this.newContacts = data; 
-            this.error = undefined;   
-            this.contactsToShow.push(this.newContacts);
+            this.error = undefined;  
+            //const event = new CustomEvent('newContactAdded');
+            //this.dispatchEvent(event);
+            //this.contactsToShow.push(this.newContacts);
         } else if (error){
             this.newContacts = undefined; 
             this.error = error;
@@ -123,8 +126,8 @@ export default class ContactList extends LightningElement {
             this.popup ==="Clickeado!" ? this.popup="Desclickeado!" : this.popup="Clickeado!";
             //this.popup = "Clickeado!";
             const dataRow = event.detail.row;
-            this.contactRow=dataRow;
-            this.modalContainer=true;
+            this.contactRow = dataRow;
+            this.modalContainer = true;
 
         } else if(event.detail.action.name === 'Delete') {
             const dataRow = event.detail.row;
@@ -134,8 +137,12 @@ export default class ContactList extends LightningElement {
             //No elimina de tabla!
             //const index = this.contacts.indexOf(dataRow.FirstName); 
             //this.contacts.splice(index,1); 
-        }
+        } /*else if(event.detail.action.name === 'newContactAdded'){
+            this.contactsToShow = this.contacts; 
+            this.popup="RowAdded ";
+        }*/
     }
+
     //To close the pop-up
     closeModalAction(){
         this.modalContainer=false;
