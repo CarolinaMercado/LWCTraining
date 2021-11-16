@@ -1,3 +1,20 @@
+
+public with sharing class ContactSearchBar {
+        //custom lookup lwc
+    @AuraEnabled(cacheable=true)
+    public static List<Account> getCustomLookupAccount (String actName){
+    List<Account> accLookupList =  new List<Account>();
+    if(actName != ''){
+        String accountName = '%' + actName + '%';
+        accLookupList = [Select Id, Name From Account Where Name like:accountName];
+        return accLookupList;
+    }
+    return accLookupList;
+    }   
+}
+
+
+/*
 public with sharing class ContactSearchBar {
     private final static Integer MAX_RESULTS = 5;
 
@@ -86,3 +103,4 @@ public with sharing class ContactSearchBar {
         return results;
     }
 }
+*/

@@ -1,0 +1,35 @@
+<!--HERE IS THE SECOND TAB PRODUCT SELECTION-->
+<template>
+    <lightning-card>
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-2">
+                <h2 class="slds-text-heading_large slds-m-left_large  slds-align_absolute-center">Add Products</h2> 
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-button class=" slds-align_absolute-center" variant="brand" label="Save & Exit" icon-name="utility:save"></lightning-button>
+            </div>
+        </div>
+        <div>
+            <lightning-tabset variant="scoped">
+                <lightning-tab label="ACA">
+                    <c-tree-products></c-tree-products>
+                </lightning-tab>
+                <lightning-tab label="Connectivity">
+                    <c-tree-products></c-tree-products>
+                </lightning-tab>
+                <lightning-tab label="Fiber Optic Cable">
+                    <c-tree-products></c-tree-products>
+                </lightning-tab>
+                <lightning-tab label="Cable">
+                    <c-tree-products></c-tree-products>
+                </lightning-tab>
+                <lightning-tab label="Test & Inspection">
+                    <c-tree-products></c-tree-products>
+                </lightning-tab>
+                <lightning-tab label="Manual Items">
+                    <c-manual-items></c-manual-items>
+                </lightning-tab>
+            </lightning-tabset>
+        </div>
+    </lightning-card>
+</template>
