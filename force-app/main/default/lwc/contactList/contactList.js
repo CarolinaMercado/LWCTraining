@@ -1,9 +1,17 @@
 import { LightningElement, wire , track, api} from 'lwc';
 import getContacts from '@salesforce/apex/ContactController.getContacts';
+import addContacts from '@salesforce/apex/ContactController.addContacts';
 import FirstNameFIELD from '@salesforce/schema/Contact.FirstName';
 import LastNameFIELD from '@salesforce/schema/Contact.LastName';
 import EmailFIELD from '@salesforce/schema/Contact.Email';
 import PhoneFIELD from '@salesforce/schema/Contact.Phone';
+
+import NameFIELD from '@salesforce/schema/Account.Name';
+import IndustryFIELD from '@salesforce/schema/Account.Industry';
+import IdFIELD from '@salesforce/schema/Account.Id';
+
+import { subscribe, MessageContext } from 'lightning/messageService';
+import ADD_ROW_LOOKUP_CHANNEL from '@salesforce/messageChannel/AddRowLookup__c';
 
 import { reduceErrors } from 'c/ldsUtils';
 
@@ -11,7 +19,8 @@ const COLUMS = [
     {label: 'First Name', fieldName: FirstNameFIELD.fieldApiName,  type:'text' , editable: true },
     {label: 'Last Name', fieldName: LastNameFIELD.fieldApiName,  type:'text' , editable: true },
     {label: 'Email', fieldName: EmailFIELD.fieldApiName,  type:'email' , editable: true },
-    {type: 'button-icon',typeAttributes:{iconName: 'utility:description',name: 'More', variant:'brand'}}
+    {type: 'button-icon',initialWidth: 34,typeAttributes:{iconName: 'action:description',name: 'More', variant:'brand'}},
+    {type: 'button-icon',initialWidth: 34,typeAttributes:{iconName: 'action:delete',name: 'Delete', variant:'brand'}}
 ];
 
 const COLUMS2 = [
@@ -24,23 +33,37 @@ const COLUMS3 = [
     {label: 'Last Name', fieldName: LastNameFIELD.fieldApiName,  type:'text' , editable: true },
 ];
 
+const COLUMSA = [
+    {label: 'Id', fieldName: IdFIELD.fieldApiName,  type:'text' , editable: true },
+    {label: 'Name', fieldName: NameFIELD.fieldApiName,  type:'text' , editable: true },
+    {label: 'Industry', fieldName: IndustryFIELD.fieldApiName,  type:'text' , editable: true },
+    {type: 'button-icon',initialWidth: 34,typeAttributes:{iconName: 'action:description',name: 'More', variant:'brand'}},
+    {type: 'button-icon',initialWidth: 34,typeAttributes:{iconName: 'action:delete',name: 'Delete', variant:'brand'}}
+
+];
 
 export default class ContactList extends LightningElement {
     @track columns = COLUMS;
+    //@track columnsA = COLUMSA; 
     //columns = []; 
+    @track contacts = [];
+    @track contactsToShow = [];
     @api auxiliar = "Ingresando";
     @api popup = "Desclickeado!";
     @api contactRow={};
     @track rowOffset = 0;  
     @track modalContainer = false;
-    
+    @track contactsIdAdded; 
+    @track newContacts;
+
     @wire(getContacts)
     contacts;
     error;
     wiredcontacts({error, data}){
         if (data){
             this.contacts = data;//Object.values(data[0]); 
-            this.error = undefined;      
+            this.error = undefined;    
+            this.contactsToShow = this.contacts;  
             //aux(); //NO está haciendo esto - siempre muestra ingresando! 
             //if (Object.keys(data[0])) {
             //    this.columns = COLUMS;}  
@@ -59,6 +82,40 @@ export default class ContactList extends LightningElement {
     return (this.contacts.error) ?
     reduceErrors(this.contacts.error):[];
     }
+    
+    
+    //Add rows
+    @wire(MessageContext)
+    messageContext;
+    subscribeToMessageChannel() {
+        this.subscription = subscribe(
+        this.messageContext,
+        ADD_ROW_LOOKUP_CHANNEL,
+        (message) => this.handleMessage(message)
+        );
+    }
+    handleMessage(message) {
+        if(message.results) {
+            this.contactsIdAdded = message.results; 
+        } 
+    }
+    connectedCallback() {
+        this.subscribeToMessageChannel();
+    }
+
+    @wire(addContacts, {recordId:'$contactsIdAdded'})
+    newContacts;
+    error;
+    wiredcontacts({error, data}){
+        if (data){
+            this.newContacts = data; 
+            this.error = undefined;   
+            this.contactsToShow.push(this.newContacts);
+        } else if (error){
+            this.newContacts = undefined; 
+            this.error = error;
+        }
+    }
 
     //Click to see Tiers
     handleRowAction(event) {
@@ -66,22 +123,29 @@ export default class ContactList extends LightningElement {
             this.popup ==="Clickeado!" ? this.popup="Desclickeado!" : this.popup="Clickeado!";
             //this.popup = "Clickeado!";
             const dataRow = event.detail.row;
-            window.console.log('dataRow@@ ' + dataRow);
             this.contactRow=dataRow;
-            window.console.log('contactRow## ' + dataRow);
             this.modalContainer=true;
-        } 
-    }
 
+        } else if(event.detail.action.name === 'Delete') {
+            const dataRow = event.detail.row;
+            this.contactRow = dataRow;
+            this.popup="Eliminado! "+ dataRow.FirstName;
+
+            //No elimina de tabla!
+            //const index = this.contacts.indexOf(dataRow.FirstName); 
+            //this.contacts.splice(index,1); 
+        }
+    }
+    //To close the pop-up
     closeModalAction(){
         this.modalContainer=false;
     }
 
-    //Table information
+
+    //Table information in Tiers and Contracts
     clickedButtonLabel = true;
     @api columnsTiers; 
     //@track dataParent; 
-
     handleClick1(event) {
         this.clickedButtonLabel = true;
         this.columnsTiers = [

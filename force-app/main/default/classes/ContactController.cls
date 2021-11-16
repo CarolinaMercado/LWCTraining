@@ -27,6 +27,13 @@ public with sharing class ContactController {
             //return null;
         }
     }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Contact> addContacts(List<Id> recordId){
+        List<Contact> newContacts = [SELECT FirstName, LastName, Email FROM Contact WHERE Id =: recordId  WITH SECURITY_ENFORCED ORDER BY Name]; 
+        return newContacts; 
+     }
+
 }
 
                 //{"label": "Email", "fieldName": "EmailFIELD.fieldApiName",  "type":"email" , "editable": "true" }

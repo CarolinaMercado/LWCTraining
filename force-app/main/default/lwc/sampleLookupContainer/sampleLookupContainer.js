@@ -11,20 +11,12 @@ export default class SampleLookupContainer extends LightningElement {
 
     isMultiEntry = true;
     maxSelectionSize = 5000;
-    initialSelection = [
-        {
-            id: 'na',
-            sObjectType: 'na',
-            icon: 'standard:lightning_component',
-            title: 'Inital selection',
-            subtitle: 'Not a valid record'
-        }
-    ];
+    initialSelection = [];
     errors = [];
     recentlyViewed = [];
     newRecordOptions = [
-        { value: 'Account', label: 'New Account' },
-        { value: 'Opportunity', label: 'New Opportunity' }
+        { value: 'Contact', label: 'New Contact' },
+        //{ value: 'Opportunity', label: 'New Opportunity' }
     ];
 
     /**
@@ -41,7 +33,6 @@ export default class SampleLookupContainer extends LightningElement {
     connectedCallback() {
         this.initLookupDefaultResults();
     }
-
     /**
      * Initializes the lookup default results with a list of recently viewed records (optional)
      */

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningMessageChannel xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>AddRowLookup</masterLabel>
+    <isExposed>true</isExposed>
+    <description>Message Channel to pass Rows to datatable</description>
+     <lightningMessageFields>
+        <fieldName>results</fieldName>
+        <description>This is the data added</description>
+    </lightningMessageFields>
+</LightningMessageChannel>

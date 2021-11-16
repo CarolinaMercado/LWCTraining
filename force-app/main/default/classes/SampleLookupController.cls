@@ -1,5 +1,5 @@
 public with sharing class SampleLookupController {
-    private final static Integer MAX_RESULTS = 10;
+    private final static Integer MAX_RESULTS = 5;
 
     @AuraEnabled(Cacheable=true)
     public static List<LookupSearchResult> search(String searchTerm, List<String> selectedIds) {
@@ -11,23 +11,24 @@ public with sharing class SampleLookupController {
             FIND :searchTerm
             IN ALL FIELDS
             RETURNING
-                Account(Id, Name, BillingCity WHERE id NOT IN :selectedIds),
-                Opportunity(Id, Name, StageName WHERE id NOT IN :selectedIds)
+                Contact(FirstName, LastName, Email WHERE id NOT IN :selectedIds)
+                //Opportunity(Id, Name, StageName WHERE id NOT IN :selectedIds)
             LIMIT :MAX_RESULTS
         ];
 
         // Prepare results
         List<LookupSearchResult> results = new List<LookupSearchResult>();
 
-        // Extract Accounts & convert them into LookupSearchResult
-        String accountIcon = 'standard:account';
-        Account[] accounts = (List<Account>) searchResults[0];
-        for (Account account : accounts) {
-            String subtitle = account.BillingCity == null ? 'Account' : 'Account • ' + account.BillingCity;
-            results.add(new LookupSearchResult(account.Id, 'Account', accountIcon, account.Name, subtitle));
+        // Extract contact & convert them into LookupSearchResult
+        String contactIcon = 'standard:contact';
+        Contact[] contacts = (List<Contact>) searchResults[0];
+        for (Contact contact : contacts) {
+            String subtitle = contact.Email == null ? 'Contact' : 'Contact • ' + contact.Email;
+            results.add(new LookupSearchResult(contact.Id, 'Contact', contactIcon, contact.Name, subtitle));
         }
 
         // Extract Opportunities & convert them into LookupSearchResult
+        /*
         String opptyIcon = 'standard:opportunity';
         Opportunity[] opptys = (List<Opportunity>) searchResults[1];
         for (Opportunity oppty : opptys) {
@@ -40,7 +41,7 @@ public with sharing class SampleLookupController {
                     'Opportunity • ' + oppty.StageName
                 )
             );
-        }
+        }*/
 
         // Optionnaly sort all results on title
         results.sort();
@@ -55,23 +56,24 @@ public with sharing class SampleLookupController {
         List<RecentlyViewed> recentRecords = [
             SELECT Id, Name, Type
             FROM RecentlyViewed
-            WHERE Type = 'Account' OR Type = 'Opportunity'
+            WHERE Type = 'Contact' // OR Type = 'Opportunity'
             //ORDER BY LastViewedDate DESC
             LIMIT 10
         ];
         // Convert recent records into LookupSearchResult
         for (RecentlyViewed recentRecord : recentRecords) {
-            if (recentRecord.Type == 'Account') {
+            if (recentRecord.Type == 'Contact') {
                 results.add(
                     new LookupSearchResult(
                         recentRecord.Id,
-                        'Account',
-                        'standard:account',
+                        'Contact',
+                        'standard:contact',
                         recentRecord.Name,
-                        'Account • ' + recentRecord.Name
+                        'Contact • ' + recentRecord.Name
                     )
                 );
             } else {
+                /*
                 results.add(
                     new LookupSearchResult(
                         recentRecord.Id,
@@ -80,7 +82,7 @@ public with sharing class SampleLookupController {
                         recentRecord.Name,
                         'Opportunity • ' + recentRecord.Name
                     )
-                );
+                );*/
             }
         }
         return results;

@@ -7,7 +7,10 @@
             <lightning-datatable key-field="Id" data={contacts.data} columns={columns} column-widths-mode="auto"
                 onrowaction={handleRowAction} >
             </lightning-datatable>
+            <lightning-datatable key-field="Id" data={newContacts.data} columns={columns} column-widths-mode="auto"
+                onrowaction={handleRowAction} ></lightning-datatable>
             <!--Data table finish-->
+            
             <!--Popup starts-->
             <template if:true={modalContainer}>
                 <section  class="slds-modal slds-fade-in-open">
@@ -118,6 +121,7 @@
             </template>
             <br/><br/>
             <!--Popup finish-->
+
             <!--If the button to see tales is clicked show message-->
             <p><lightning-formatted-text value={popup}></lightning-formatted-text></p>
         </template>
